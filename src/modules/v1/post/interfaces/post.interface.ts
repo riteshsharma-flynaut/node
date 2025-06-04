@@ -1,8 +1,8 @@
-// Post data transfer objects and service interface
+// data transfer objects and service interface
 export interface CreatePostRequest {
     title: string;
     content?: string;
-    authorId: string; // This will be the userId
+    authorId: string;
 }
 
 export interface UpdatePostRequest {
@@ -21,7 +21,7 @@ export interface PostResponse {
         email: string;
         firstName: string;
         lastName: string;
-    }; // Include author details when needed
+    };
 }
 
 export interface IPostService {

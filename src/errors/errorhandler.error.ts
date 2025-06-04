@@ -6,12 +6,9 @@ import logger from "../config/logger.config";
 
 export class ErrorHandler {
     public static handleError(error: Error | BaseError, req?: Request): BaseError {
-        // If it's already a BaseError, return as is
         if (error instanceof BaseError) {
             return error;
         }
-
-        // Handle Prisma errors
         if (
             error.name === "PrismaClientKnownRequestError" ||
             error.name === "PrismaClientValidationError" ||
@@ -20,12 +17,10 @@ export class ErrorHandler {
             return PrismaErrorHandler.handle(error, req?.path, req?.method);
         }
 
-        // Handle validation errors from express-validator
         if (error.name === "ValidationError") {
             return new ValidationError(error.message, undefined, undefined, req?.path, req?.method);
         }
 
-        // Handle other known errors
         if (error.message.includes("not found")) {
             return new ApiError(error.message, 404, req?.path, req?.method);
         }
@@ -34,7 +29,6 @@ export class ErrorHandler {
             return new ApiError(error.message, 409, req?.path, req?.method);
         }
 
-        // Default to generic API error
         return new ApiError(process.env.NODE_ENV === "production" ? "Internal Server Error" : error.message, 500, req?.path, req?.method);
     }
 
@@ -72,14 +66,10 @@ export class ErrorHandler {
     };
 }
 
-// Global error handling middleware
 export const globalErrorHandler = (error: Error | BaseError, req: Request, res: Response, next: NextFunction): void => {
     const processedError = ErrorHandler.handleError(error, req);
-
-    // Log the error
     ErrorHandler.logError(processedError, req);
 
-    // Send error response
     res.status(processedError.statusCode).json({
         success: false,
         error: {
@@ -120,6 +110,6 @@ export const unhandledRejectionHandler = (reason: any, promise: Promise<any>): v
 export const uncaughtExceptionHandler = (error: Error): void => {
     logger.error("Uncaught Exception:", error);
 
-    // Graceful shutdown
+    //shutdown
     process.exit(1);
 };

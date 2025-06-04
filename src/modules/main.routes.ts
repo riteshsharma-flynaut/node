@@ -7,7 +7,7 @@ const mainRouter = Router();
 mainRouter.use("/user", userRouter);
 mainRouter.use("/post", postRouter);
 
-// Health check for API routes
+// Health check route
 mainRouter.get("/health", (req, res) => {
     res.json({
         message: "API v1 is running",

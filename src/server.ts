@@ -10,10 +10,8 @@ import mainRouter from "./modules/main.routes";
 import { globalErrorHandler, notFoundHandler, uncaughtExceptionHandler, unhandledRejectionHandler } from "./errors/errorhandler.error";
 import { RateLimitError } from "./errors/api.error";
 
-// Create Express app
 const app: Application = express();
 
-// Security middleware
 app.use(
     helmet({
         contentSecurityPolicy: {
@@ -42,7 +40,6 @@ app.use(
     })
 );
 
-// Body parsing middleware
 app.use(
     express.json({
         limit: "10mb",
@@ -57,7 +54,6 @@ app.use(
     })
 );
 
-// Request logging middleware
 app.use(
     morgan("combined", {
         stream: {
@@ -70,8 +66,8 @@ app.use(
 
 // Rate limiting
 const limiter = rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 100, // limit each IP to 100 requests per windowMs
+    windowMs: 15 * 60 * 1000,
+    max: 100,
     message: "Too many requests from this IP, please try again later.",
     standardHeaders: true,
     legacyHeaders: false,
@@ -91,14 +87,11 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 
-// Request ID middleware
 app.use((req: Request, res: Response, next: NextFunction) => {
     (req as any).id = Math.random().toString(36).slice(2, 11);
     res.setHeader("X-Request-ID", req.id);
     next();
 });
-
-// Request timing middleware
 app.use((req: Request, res: Response, next: NextFunction) => {
     (req as any).startTime = Date.now();
     next();
@@ -118,19 +111,6 @@ app.get("/health", (req, res) => {
     });
 });
 
-// API documentation endpoint
-app.get("/api", (req, res) => {
-    res.json({
-        name: "Node.js API",
-        version: "1.0.0",
-        description: "Node.js API",
-        endpoints: {
-            users: "/api/v1/users",
-            health: "/health",
-        },
-        documentation: "Visit /api/docs for detailed API documentation",
-    });
-});
 
 // 404 handler
 app.use(notFoundHandler);
