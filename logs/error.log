@@ -1,0 +1,2 @@
+{"level":"error","message":"Error fetching user by ID 24282d9b-6254-48ce-81a3-8c4cb6d84fee:","service":"nodejs-api","timestamp":"2025-06-04 23:46:14","version":"1.0.0"}
+{"authorId":"24282d9b-6254-48ce-81a3-8c4cb6d84fee","error":"User not found","level":"error","message":"Error creating post:","service":"nodejs-api","timestamp":"2025-06-04 23:46:14","title":"My First Blog Post","version":"1.0.0"}

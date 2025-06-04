@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.env
+coverage/
+.vscode/
+.dist/
+.env.*
+.gitignore
+.prettierignore
+LICENSE
+README.md
